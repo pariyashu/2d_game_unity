@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPlayer : MonoBehaviour
-public Transform target;
-public Transform leftBounds;
-public Transform rightBounds;
-private float camWidth, camHeight, levelMinX, levelMaxX;
-{
+public class CameraFollow : MonoBehaviour{
+    public Transform target;
+    public Transform leftBounds;
+    public Transform rightBounds;
+
+    // speed of the camera
+    public float smoothDampTime = 0.15f;
+    private Vector3 smoothDampvelocity = Vector3.zero;
+    private float camWidth, camHeight, levelMinX, levelMaxX;
     // set up camera bounds 
     void Start()
     {
@@ -23,11 +26,12 @@ private float camWidth, camHeight, levelMinX, levelMaxX;
     void Update()
     { 
         if (target){
-            // Set camera to follow player
+            // set target so that camera stays in bounds
             float targetX = Mathf.Max(levelMinX, Mathf.Min(levelMaxX, target.position.x));
-            float targetY = target.position.y;
-            Vector3 v = new Vector3(targetX, targetY, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, v, 0.1f);
+            // method that moves the camera to the target position        
+            float x = Mathf.SmoothDamp(transform.position.x, targetX, ref smoothDampvelocity.x, smoothDampTime);
+            
+            transform.position = new Vector3(x, transform.position.y, transform.position.z);
         }
     }
 }
