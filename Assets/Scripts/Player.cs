@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour{
+    
     public Vector2 velocity;
     // game object to keep in layers 
     public LayerMask wallMask;
@@ -66,15 +66,17 @@ public class Player : MonoBehaviour
             RaycastHit2D wallBottom = Physics2D.Raycast(originBottom,new Vector2(direction,0), velocity.x * Time.deltaTime, wallMask);
             if (wallTop.collider != null || wallMiddle.collider != null || wallBottom.collider != null)
             {
-                pos.x = velocity.x * Time.deltaTime * direction;
-                // if there is collission, return the collission point
+                pos.x -= velocity.x * Time.deltaTime * direction;
+                // if there is no collission, the player will keep moving in the same direction
+                
                 return pos;
 
             }
-            // if there is no collission, return the original position
+            else
+            {
+            // if there is collission, stop
             return pos;
-            
-
-        }
+            }
+}
 }
 
