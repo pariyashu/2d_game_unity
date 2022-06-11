@@ -31,6 +31,7 @@ public class Player : MonoBehaviour{
         {
             CheckPlayerInput();
             UpdatePlayerPosition();
+            UpdateAnimationStates();
         }
         void UpdatePlayerPosition () {
             Vector3 pos = transform.localPosition;
@@ -68,6 +69,22 @@ public class Player : MonoBehaviour{
             }
             transform.localPosition = pos;
             transform.localScale = scale;
+        }
+        // function for Animation different based on states
+        void UpdateAnimationStates(){
+            if (grounded && !walk){
+                GetComponent<Animator>().SetBool("isJumping", false);
+                GetComponent<Animator>().SetBool("isRunning", false);
+            }
+            if (grounded && walk){
+                GetComponent<Animator>().SetBool("isJumping", false);
+                GetComponent<Animator>().SetBool("isRunning", true);
+            }
+            if (playerState== PlayerState.jumping){
+                GetComponent<Animator>().SetBool("isJumping", true);
+                GetComponent<Animator>().SetBool("isRunning", false);
+                
+            }
         }
         void CheckPlayerInput()
         {
