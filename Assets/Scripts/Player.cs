@@ -8,11 +8,11 @@ public class Player : MonoBehaviour{
     public float gravity;
     // game object to keep in layers 
     public LayerMask wallMask;
-    public LayerMask groundMask;
+    public LayerMask floorMask;
     
     //states for input
     private bool walk,left_walk, right_walk,jump;
-    // player current states 
+    // track player current states 
     public enum PlayerState {
         idle,
         walking,
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour{
     
     void Start()
     {
-      // Fall(); 
+       Fall(); 
     }
 
     void Update()
@@ -60,6 +60,9 @@ public class Player : MonoBehaviour{
                 pos.y += velocity.y * Time.deltaTime;
                 velocity.y -= gravity * Time.deltaTime;
             }
+            if (velocity.y <= 0){
+                pos = CheckFloorRays(pos);
+            }
             transform.localPosition = pos;
             transform.localScale = scale;
         }
@@ -89,8 +92,40 @@ public class Player : MonoBehaviour{
                 // if there is no collission, the player will keep moving in the same direction
             }
                 return pos;
-
             }
+
+
+    Vector3 CheckFloorRays(Vector3 pos){
+        // stop player falling from ground by adding collission condition
+        Vector2 originLeft = new Vector2(pos.x - 0.5f + 0.2f, pos.y - 1f);
+        Vector2 originMiddle = new Vector2(pos.x, pos.y-1f);
+        Vector2 originRight = new Vector2(pos.x +0.5f- 0.2f, pos.y -1f);
+        //get hit information
+        RaycastHit2D floorLeft = Physics2D.Raycast(originLeft,Vector2.down, velocity.y * Time.deltaTime, floorMask);
+        RaycastHit2D floorMiddle = Physics2D.Raycast(originMiddle,Vector2.down, velocity.y * Time.deltaTime, floorMask);
+        RaycastHit2D floorRight = Physics2D.Raycast(originRight,Vector2.down, velocity.y * Time.deltaTime, floorMask);
+    
+    if (floorLeft.collider != null || floorMiddle.collider != null || floorRight.collider != null)
+    {
+        RaycastHit2D hitRay = floorRight;
+        if (floorLeft){
+            hitRay = floorLeft;
+        }
+        else if(floorMiddle){
+            hitRay = floorMiddle;
+        }
+        else if (floorRight){
+            hitRay = floorRight;
+        }
+        // if ground then set grounded to true
+        velocity.y = 0;
+        grounded = true;
+        playerState = PlayerState.idle;
+        pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 + 1;
+
+    }
+    return pos;
+    }
     void Fall(){
         velocity.y = 0;
         playerState = PlayerState.jumping;
