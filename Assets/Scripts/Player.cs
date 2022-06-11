@@ -63,6 +63,9 @@ public class Player : MonoBehaviour{
             if (velocity.y <= 0){
                 pos = CheckFloorRays(pos);
             }
+            if (velocity.y >= 0){
+                pos = CheckCeilingRays(pos);
+            }
             transform.localPosition = pos;
             transform.localScale = scale;
         }
@@ -128,6 +131,35 @@ public class Player : MonoBehaviour{
         if (playerState != PlayerState.jumping){
             Fall();
         }
+    }
+    return pos;
+    }
+// check if player hit something on top like bricks or enemies
+    Vector3 CheckCeilingRays(Vector3 pos){
+        // stop player falling from ground by adding collission condition
+        Vector2 originLeft = new Vector2(pos.x - 0.5f + 0.2f, pos.y + 1f);
+        Vector2 originMiddle = new Vector2(pos.x, pos.y + 1f);
+        Vector2 originRight = new Vector2(pos.x +0.5f- 0.2f, pos.y + 1f);
+        //get hit information
+        RaycastHit2D ceilingLeft = Physics2D.Raycast(originLeft,Vector2.up, velocity.y * Time.deltaTime, floorMask);
+        RaycastHit2D ceilingMiddle = Physics2D.Raycast(originMiddle,Vector2.up, velocity.y * Time.deltaTime, floorMask);
+        RaycastHit2D ceilingRight = Physics2D.Raycast(originRight,Vector2.up, velocity.y * Time.deltaTime, floorMask);
+    if (ceilingLeft.collider != null || ceilingMiddle.collider != null || ceilingRight.collider != null)
+    {
+        RaycastHit2D hitRay = ceilingRight;
+        if (ceilingLeft){
+            hitRay = ceilingLeft;
+        }
+        else if(ceilingMiddle){
+            hitRay = ceilingMiddle;
+        }
+        else if (ceilingRight){
+            hitRay = ceilingRight;
+        }
+
+        velocity.y = 0;
+        pos.y = hitRay.collider.bounds.center.y - hitRay.collider.bounds.size.y / 2 - 1;
+    Fall();
     }
     return pos;
     }
