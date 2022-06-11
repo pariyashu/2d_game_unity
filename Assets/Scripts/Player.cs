@@ -3,17 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour{
-    
+    public float jumpVelocity;
     public Vector2 velocity;
+    public float gravity;
     // game object to keep in layers 
     public LayerMask wallMask;
+    public LayerMask groundMask;
     
     //states for input
     private bool walk,left_walk, right_walk,jump;
+    // player current states 
+    public enum PlayerState {
+        idle,
+        walking,
+        jumping
+ 
+    }
+    private PlayerState playerState = PlayerState.idle;
+    private bool grounded = false;
     
     void Start()
     {
-        
+      // Fall(); 
     }
 
     void Update()
@@ -40,6 +51,15 @@ public class Player : MonoBehaviour{
                 pos = CheckWallRays(pos, scale.x);
                 
             }
+            // avoide double jump when player press space bar 
+            if (jump && playerState != PlayerState.jumping){
+                playerState = PlayerState.jumping;
+                velocity = new Vector2(velocity.x, jumpVelocity);
+            }
+            if (playerState == PlayerState.jumping){
+                pos.y += velocity.y * Time.deltaTime;
+                velocity.y -= gravity * Time.deltaTime;
+            }
             transform.localPosition = pos;
             transform.localScale = scale;
         }
@@ -54,8 +74,7 @@ public class Player : MonoBehaviour{
             right_walk = input_right && !input_left;
             jump = input_space;
         }
-        Vector3 CheckWallRays(Vector3 pos, float direction)
-        {
+        Vector3 CheckWallRays(Vector3 pos, float direction){
             // create rays to check if there is collission
             Vector2 originTop = new Vector2(pos.x + direction *.4f, pos.y + 1f - 0.2f);
             Vector2 originMiddle = new Vector2(pos.x + direction * .4f, pos.y);
@@ -68,15 +87,16 @@ public class Player : MonoBehaviour{
             {
                 pos.x -= velocity.x * Time.deltaTime * direction;
                 // if there is no collission, the player will keep moving in the same direction
-                
+            }
                 return pos;
 
             }
-            else
-            {
-            // if there is collission, stop
-            return pos;
-            }
+    void Fall(){
+        velocity.y = 0;
+        playerState = PlayerState.jumping;
+        grounded = false;
+    }
+     
 }
-}
+
 
