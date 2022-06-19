@@ -10,6 +10,8 @@ public class QuestionBlock : MonoBehaviour
     private bool coinBounce = true;
     // to bounce back to same position store original position 
     private Vector2 originalPosition;
+    // acces the current sprite to replace it 
+    public Sprite emptyBlockSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +32,16 @@ public class QuestionBlock : MonoBehaviour
     {
         
     }
+
+    void ChangeSprite(){
+        GetComponent<Animator>().enabled = false;
+        GetComponent<SpriteRenderer>().sprite = emptyBlockSprite;
+    }
+
     IEnumerator Bounce()
     {
+        // once hit change the sprite to empty block
+        ChangeSprite();
         // to make the question block bounce up
         while (true)
         {
