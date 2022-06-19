@@ -13,6 +13,10 @@ public class QuestionBlock : MonoBehaviour
     // acces the current sprite to replace it 
     public Sprite emptyBlockSprite;
 
+    public float coinBounceSpeed = 8f;
+    public float coinBounceHeight = 3f;
+    public float coinFallDistacne = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +36,14 @@ public class QuestionBlock : MonoBehaviour
     {
         
     }
+    void PresentCoin(){
+        // instiance the coin prefab
+        GameObject spinningCoin = (GameObject)Instantiate(Resources.Load("Prefabs/Spinning_Coin", typeof(GameObject)));
+        spinningCoin.transform.SetParent(this.transform.parent);
+        // instiantiate coin one unit higher than the block
+        spinningCoin.transform.localPosition = new Vector2(originalPosition.x, originalPosition.y + 1);
+        StartCoroutine(MoveCoin(spinningCoin));
+    }
 
     void ChangeSprite(){
         GetComponent<Animator>().enabled = false;
@@ -42,6 +54,7 @@ public class QuestionBlock : MonoBehaviour
     {
         // once hit change the sprite to empty block
         ChangeSprite();
+        PresentCoin();
         // to make the question block bounce up
         while (true)
         {
@@ -67,5 +80,28 @@ public class QuestionBlock : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    IEnumerator MoveCoin(GameObject coin){
+        // to make the coin move up
+        while(true){
+            coin.transform.localPosition = new Vector2(coin.transform.localPosition.x, coin.transform.localPosition.y + coinBounceSpeed * Time.deltaTime);
+            if (coin.transform.localPosition.y >= originalPosition.y + coinBounceHeight+ 1)
+            {
+                break;
+            }
+            yield return null;
+        }
+        // to make the coin move down
+        while(true){
+            coin.transform.localPosition = new Vector2(coin.transform.localPosition.x, coin.transform.localPosition.y - coinBounceSpeed * Time.deltaTime);
+            if (coin.transform.localPosition.y <= originalPosition.y + coinFallDistacne + 1)
+            {
+                Destroy(coin.gameObject);
+                break;
+            }
+            yield return null;
+        }
+
     }
 }
