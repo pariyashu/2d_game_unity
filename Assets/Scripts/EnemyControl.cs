@@ -12,6 +12,11 @@ public class EnemyControl : MonoBehaviour
     public Vector2 velocity;
     // at beginning the enemy is not grounded
     public bool grounded = false;
+    // condition if enemy should die or not
+    public bool isDead = false;
+    // time lapse between collission and disappear of the enemy
+    private float deathTime = 0.0f;
+    public float timeBeforeDestroy = 1.0f;
     // to check if enemy hit ground mask
     public LayerMask floorMask;
     // to check if enemy hit wall mask
@@ -37,9 +42,34 @@ public class EnemyControl : MonoBehaviour
     void Update()
     {
         UpdateEnemyPosition();
+        CheckCrushed();
     }
-    // to update the enemy position if enemy is not dead
+    // check if enemy is crushed and update the state
+    public void Crush(){
+        state = EnemyState.dead;
+        GetComponent<Animator>().SetBool("isCrushed", true);
+        GetComponent<Collider2D>().enabled = false;
+        isDead = true;
 
+    }
+    void CheckCrushed(){
+        if(isDead){
+
+            if (deathTime <= timeBeforeDestroy)
+            {
+                deathTime += Time.deltaTime;
+            }
+            else
+            {
+                isDead = false;
+                Destroy (this.gameObject);
+            }
+            {
+                Destroy(gameObject);
+            }
+            }
+        }
+    // to update the enemy position if enemy is not dead
     void UpdateEnemyPosition(){
         if (state != EnemyState.dead)
         {

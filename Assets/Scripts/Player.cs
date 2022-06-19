@@ -137,6 +137,10 @@ public class Player : MonoBehaviour{
         else if (floorRight){
             hitRay = floorRight;
         }
+        // player colided with enemy from top to down then kill the enemy
+        if (hitRay.collider.tag == "Enemy") {
+            hitRay.collider.GetComponent<EnemyControl>().Crush();
+        }
         // if ground then set grounded to true
         velocity.y = 0;
         grounded = true;
