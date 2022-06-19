@@ -86,6 +86,10 @@ public class EnemyControl : MonoBehaviour
               else if (groundRight){
                 hitRay = groundRight;
            }
+           // chek if collided with player kill the player 
+              if (hitRay.collider.tag == "Player"){
+                Application.LoadLevel("GameOver");
+              }
            // enemy when colliding with the ground is grounded and start walking    
            pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 +0.5f;
            grounded = true;
@@ -120,6 +124,10 @@ public class EnemyControl : MonoBehaviour
             }
             else if (wallBottom){
                 hitRay = wallBottom;
+            }
+            // chek if collided with player kill the player 
+            if (hitRay.collider.tag == "Player"){
+            Application.LoadLevel("GameOver");
             }
             isWalkingLeft = !isWalkingLeft; // change direction
 
