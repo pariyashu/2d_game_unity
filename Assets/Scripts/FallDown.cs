@@ -9,6 +9,7 @@ public class FallDown : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            //Debug.Log("You lose!");
             SceneManager.LoadScene("GameOver");
         }
     }
