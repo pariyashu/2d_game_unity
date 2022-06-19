@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyControl : MonoBehaviour
 {
@@ -118,7 +119,7 @@ public class EnemyControl : MonoBehaviour
            }
            // chek if collided with player kill the player 
               if (hitRay.collider.tag == "Player"){
-                Application.LoadLevel("GameOver");
+                SceneManager.LoadScene("GameOver");
               }
            // enemy when colliding with the ground is grounded and start walking    
            pos.y = hitRay.collider.bounds.center.y + hitRay.collider.bounds.size.y / 2 +0.5f;
@@ -157,7 +158,7 @@ public class EnemyControl : MonoBehaviour
             }
             // chek if collided with player kill the player 
             if (hitRay.collider.tag == "Player"){
-            Application.LoadLevel("GameOver");
+            SceneManager.LoadScene("GameOver");
             }
             isWalkingLeft = !isWalkingLeft; // change direction
 
