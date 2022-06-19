@@ -12,7 +12,10 @@ public class EnemyControl : MonoBehaviour
     public Vector2 velocity;
     // at beginning the enemy is not grounded
     public bool grounded = false;
+    // to check if enemy hit ground mask
     public LayerMask floorMask;
+    // to check if enemy hit wall mask
+    public LayerMask wallMask;
 
     // starting states of enemy 
     private enum EnemyState{
@@ -35,6 +38,8 @@ public class EnemyControl : MonoBehaviour
     {
         UpdateEnemyPosition();
     }
+    // to update the enemy position if enemy is not dead
+
     void UpdateEnemyPosition(){
         if (state != EnemyState.dead)
         {
@@ -56,7 +61,9 @@ public class EnemyControl : MonoBehaviour
             }
             if (velocity.y < 0){
                pos = CheckGround(pos);
+               
             }
+            CheckWalls(pos,scale.x);
             transform.localPosition = pos;
             transform.localScale = scale;
         }
@@ -93,6 +100,30 @@ public class EnemyControl : MonoBehaviour
             }
         }
         return pos;
+    }
+
+    // check walls if enemy collided with wall start moving in oppisite direction 
+    void CheckWalls(Vector3 pos,float direction){
+        Vector2 originTop = new Vector2 (pos.x +direction * 0.4f, pos.y +0.5f - 0.2f);	// 0.2f is the offset to the raycast
+        Vector2 originMiddle = new Vector2 (pos.x +direction * 0.4f, pos.y);
+        Vector2 originBottom = new Vector2 (pos.x +direction * 0.4f, pos.y -0.5f + 0.2f);
+        RaycastHit2D wallTop = Physics2D.Raycast(originTop, new Vector2 (direction,0), velocity.x * Time.deltaTime,wallMask);
+        RaycastHit2D wallMiddle = Physics2D.Raycast(originMiddle, new Vector2 (direction,0), velocity.x * Time.deltaTime,wallMask);
+        RaycastHit2D wallBottom = Physics2D.Raycast(originBottom, new Vector2 (direction,0), velocity.x * Time.deltaTime,wallMask);
+        if (wallTop.collider !=  null || wallMiddle.collider !=  null || wallBottom.collider !=  null){
+            RaycastHit2D hitRay = wallTop;
+            if (wallTop){
+                hitRay = wallTop;
+            }
+            else if (wallMiddle){
+                hitRay = wallMiddle;
+            }
+            else if (wallBottom){
+                hitRay = wallBottom;
+            }
+            isWalkingLeft = !isWalkingLeft; // change direction
+
+    }
     }
     // check if the enemy is in camera view area
     // enable script when on view area
