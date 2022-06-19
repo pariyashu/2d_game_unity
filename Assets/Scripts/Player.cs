@@ -177,6 +177,9 @@ public class Player : MonoBehaviour{
         else if (ceilingRight){
             hitRay = ceilingRight;
         }
+        if (hitRay.collider.tag == "QuestionBlock") {
+            hitRay.collider.GetComponent<QuestionBlock>().QuestionBlockBounce();
+        }
 
         velocity.y = 0;
         pos.y = hitRay.collider.bounds.center.y - hitRay.collider.bounds.size.y / 2 - 1;
