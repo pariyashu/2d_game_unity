@@ -98,6 +98,7 @@ public class EnemyControl : MonoBehaviour
     // enable script when on view area
     void OnBecameVisible()
     {
+        // enable teh script only after the enemy is in camera view area
         enabled = true;
     }
     void Fall()
