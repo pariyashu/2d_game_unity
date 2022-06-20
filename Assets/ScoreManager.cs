@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 //
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
+    
+    
+    
     public Text scoreText;
     public Text highScoreText;
     public Text lifeLeftText;
@@ -43,7 +47,10 @@ public class ScoreManager : MonoBehaviour
         lifeLeftText.text = "Life Left: " + lifeLeft.ToString();
         if (lifeLeft == 0)
         {
-            SceneManager.LoadScene("GameOver");
+            Debug.Log("Game Over, you dead");
+            
+           
+            SceneManager.LoadScene("GameOverScreen");
         }
     }
        
