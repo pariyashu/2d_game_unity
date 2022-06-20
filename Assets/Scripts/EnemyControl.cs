@@ -139,6 +139,7 @@ public class EnemyControl : MonoBehaviour
 
     // check walls if enemy collided with wall start moving in oppisite direction 
     void CheckWalls(Vector3 pos,float direction){
+        
         Vector2 originTop = new Vector2 (pos.x +direction * 0.4f, pos.y +0.5f - 0.2f);	// 0.2f is the offset to the raycast
         Vector2 originMiddle = new Vector2 (pos.x +direction * 0.4f, pos.y);
         Vector2 originBottom = new Vector2 (pos.x +direction * 0.4f, pos.y -0.5f + 0.2f);
@@ -158,7 +159,11 @@ public class EnemyControl : MonoBehaviour
             }
             // chek if collided with player kill the player 
             if (hitRay.collider.tag == "Player"){
-            SceneManager.LoadScene("GameOver");
+            pos.y = 2.5f;
+            pos.x = 0.0f;
+            pos.z = -1.7f;
+            this.transform.localPosition = pos;
+            ScoreManager.instance.SubtractLife();
             }
             isWalkingLeft = !isWalkingLeft; // change direction
 
