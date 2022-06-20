@@ -9,8 +9,9 @@ public class FallDown : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //Debug.Log("You lose!");
-            SceneManager.LoadScene("GameOver");
+            ScoreManager.instance.SubtractLife();
+           // Log.debug("Player hit");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
