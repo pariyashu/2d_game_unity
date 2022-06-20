@@ -26,6 +26,7 @@ public class QuestionBlock : MonoBehaviour
     {
         if (coinBounce)
         {
+           
             coinBounce = false;
             
             StartCoroutine(Bounce());
@@ -43,6 +44,7 @@ public class QuestionBlock : MonoBehaviour
         // instiantiate coin one unit higher than the block
         spinningCoin.transform.localPosition = new Vector2(originalPosition.x, originalPosition.y + 1);
         StartCoroutine(MoveCoin(spinningCoin));
+        
     }
 
     void ChangeSprite(){
@@ -54,7 +56,9 @@ public class QuestionBlock : MonoBehaviour
     {
         // once hit change the sprite to empty block
         ChangeSprite();
+       
         PresentCoin();
+        
         // to make the question block bounce up
         while (true)
         {
@@ -84,6 +88,7 @@ public class QuestionBlock : MonoBehaviour
 
     IEnumerator MoveCoin(GameObject coin){
         // to make the coin move up
+        
         while(true){
             coin.transform.localPosition = new Vector2(coin.transform.localPosition.x, coin.transform.localPosition.y + coinBounceSpeed * Time.deltaTime);
             if (coin.transform.localPosition.y >= originalPosition.y + coinBounceHeight+ 1)
@@ -98,10 +103,12 @@ public class QuestionBlock : MonoBehaviour
             if (coin.transform.localPosition.y <= originalPosition.y + coinFallDistacne + 1)
             {
                 Destroy(coin.gameObject);
+                ScoreManager.instance.AddPoint();
                 break;
             }
             yield return null;
         }
+        
 
     }
 }

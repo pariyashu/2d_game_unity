@@ -5,6 +5,7 @@ using UnityEngine.UI;
 //
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager instance;
     public Text scoreText;
     public Text highScoreText;
     public int score = 0;
@@ -13,13 +14,17 @@ public class ScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreText.text =  " Score Points: " + score.ToString() ;
+        scoreText.text =  "Score Points: " + score.ToString() ;
         highScoreText.text = "High Score: " + highScore.ToString() ;
+    }
+    public void Awake(){
+        instance = this;
     }
 
     // Update is called once per frame
-    void Update()
+    public void AddPoint()
     {
-        
+        score += 10;
+        scoreText.text = "Score Points: " + score.ToString();
     }
 }
