@@ -11,7 +11,7 @@ public class Castle : MonoBehaviour
         if (other.tag == "Player")
         {
             Debug.Log("You win!");
-            SceneManager.LoadScene("Win");
+            SceneManager.LoadScene("win");
         }
     }
 }
