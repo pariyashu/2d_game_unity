@@ -38,7 +38,7 @@ public class ScoreManager : MonoBehaviour
     }
     public void SubtractLife()
     {
-        Debug.Log("substrateted the life ");
+        
         lifeLeft--;
         lifeLeftText.text = "Life Left: " + lifeLeft.ToString();
         if (lifeLeft == 0)

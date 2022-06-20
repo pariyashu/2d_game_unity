@@ -159,10 +159,11 @@ public class EnemyControl : MonoBehaviour
             }
             // chek if collided with player kill the player 
             if (hitRay.collider.tag == "Player"){
-            pos.y = 2.5f;
-            pos.x = 0.0f;
-            pos.z = -1.7f;
-            this.transform.localPosition = pos;
+            var pos_player = hitRay.collider.transform.position;
+            pos_player.y = 2.5f;
+            pos_player.x = 0.0f;
+            pos_player.z = -1.7f;
+            hitRay.collider.transform.position = pos_player;
             ScoreManager.instance.SubtractLife();
             }
             isWalkingLeft = !isWalkingLeft; // change direction
