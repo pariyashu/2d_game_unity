@@ -46,6 +46,7 @@ public class Player : MonoBehaviour{
                 if (right_walk){
                     // change the face direction to right and walk on right side
                     pos.x += velocity.x * Time.deltaTime;
+                    //transform.Rotate(0f,180f,0f);
                     scale.x = 1;
                 }
                 // use raycast to check if there is a wall in front of the player
