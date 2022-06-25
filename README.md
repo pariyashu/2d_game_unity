@@ -14,5 +14,11 @@ Although the assets were recreated by Chris Fletcher, they are copy of original 
 - Score board where the highest score till now, current score and the life remaining will be shown
 - Life count script which counts the life remaining after each time the player get killed
 - script that controls if life is 0 then gameover
-- 
+- When ctrl button pressed then bullet will be fired by player
+- When Bullet hits the Enemy player gets more points
+- Resume and escape game canvas with buttons to resume and quit game
+- Restart and quit Button that is shown when no more life remains
+- Win screen when Player wins the game 
+
+# More information can be seen in Commits history
 
