@@ -22,6 +22,11 @@ public class EnemyControl : MonoBehaviour
     public LayerMask floorMask;
     // to check if enemy hit wall mask
     public LayerMask wallMask;
+    // emeny health only destroy after certain time not one bullet
+    public int health = 100;
+    public GameObject deathEffect;
+
+
 
     // starting states of enemy 
     private enum EnemyState{
@@ -186,4 +191,17 @@ public class EnemyControl : MonoBehaviour
         state = EnemyState.falling;
         grounded = false;
 }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        Destroy(gameObject);
+    }
 }
