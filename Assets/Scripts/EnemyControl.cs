@@ -25,6 +25,7 @@ public class EnemyControl : MonoBehaviour
     // emeny health only destroy after certain time not one bullet
     public int health = 100;
     public GameObject deathEffect;
+    public static EnemyControl instance;
 
 
 

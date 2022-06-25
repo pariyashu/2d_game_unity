@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
     {
         if (hitInfo.name == "Enemy")
         {
-        Debug.Log(hitInfo.name);
+        ScoreManager.instance.AddPoint();
         }
     
     }
